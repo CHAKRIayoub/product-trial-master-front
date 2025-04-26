@@ -6,7 +6,12 @@
         {{ title }}
     </div>
     <div class="p-toolbar-group-end">
-        <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
+
+        @if(cart.cartCount() > 0){
+            <span class="text-xl font-semibold text-900">{{ cart.cartCount() }}</span>
+        }
+
+         <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
     </div>
 </p-toolbar>
 <p-splitter 

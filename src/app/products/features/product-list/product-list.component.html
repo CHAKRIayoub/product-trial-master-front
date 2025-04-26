@@ -30,8 +30,10 @@
                                 <span class="text-xl font-semibold text-900">{{ '$' + product.price }}</span>
                                 <div class="flex flex-row-reverse md:flex-row gap-2">
 
-                                    <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)" />
-                                    <p-button label="Supprimer" severity="danger"  (onClick)="onDelete(product)"/>
+                                    <p-button label="Ajouter" severity="primary" (onClick)="addToCart(product)" />
+
+                                    <!-- <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)" />
+                                    <p-button label="Supprimer" severity="danger"  (onClick)="onDelete(product)"/> -->
 
                                 </div>
                             </div>

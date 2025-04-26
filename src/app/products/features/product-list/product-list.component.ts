@@ -8,7 +8,7 @@ import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
-
+import { CartStore } from '../../stores/cart-store/cart.store'
 
 const emptyProduct: Product = {
   id: 0,
@@ -35,7 +35,9 @@ const emptyProduct: Product = {
   imports: [CommonModule, TagModule, DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent],
 })
 export class ProductListComponent implements OnInit {
+
   private readonly productsService = inject(ProductsService);
+  private readonly cart = inject(CartStore);
 
   public readonly products = this.productsService.products;
 
@@ -63,6 +65,10 @@ export class ProductListComponent implements OnInit {
     this.productsService.delete(product.id).subscribe();
   }
 
+  public addToCart(product: Product) {
+    this.cart.addToCart(product)
+  }
+
   public onSave(product: Product) {
     if (this.isCreation) {
       this.productsService.create(product).subscribe();
@@ -79,5 +85,9 @@ export class ProductListComponent implements OnInit {
   private closeDialog() {
     this.isDialogVisible = false;
   }
+
+
+
+  
 
 }
