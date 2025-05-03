@@ -8,7 +8,7 @@
     <div class="p-toolbar-group-end">
 
         @if(cart.cartCount() > 0){
-            <span class="text-xl font-semibold text-900">{{ cart.cartCount() }}</span>
+            <span class="cart-badge border-circle bg-orange-400 text-white p-1">{{cart.cartCount()}}</span>
         }
 
          <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
