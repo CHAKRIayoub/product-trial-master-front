@@ -2,78 +2,74 @@ import { computed } from '@angular/core';
 import { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';
 import { Product } from 'app/products/data-access/product.model';
 
-type ProductCart = {
+export type ProductCart = {
   product : Product,
   quantity : number
 }
 
-type CartState = {
-  cartProducts: Array<ProductCart>
+export type CartState = {
+  cartProducts: Map<number, ProductCart>
 };
 
 const initialCartSate : CartState = {
-  cartProducts: []
+  cartProducts: new Map()
 }
 
 export const CartStore = signalStore(
+
   { providedIn: 'root' },
 
   withState(initialCartSate),
+
 
   withMethods((store) => ({ 
 
     addToCart: (product : Product) => {
 
-      const cartProducts = store.cartProducts();
-      const productCartIndex = cartProducts.findIndex((productCart : ProductCart) => productCart.product.id === product.id);
+      let cartProducts : Map<number, ProductCart> = new Map(store.cartProducts())
+      let p : ProductCart | undefined = cartProducts.get(product.id)
 
-      if (productCartIndex > -1) {
+      cartProducts.set( product.id,  { product: product, quantity : (p) ? p.quantity + 1 : 1})
 
-        patchState( store, (state) => {
+      patchState(store, (state) => {
           
-            return { 
-              cartProducts: cartProducts.map((item)=>{
-                if(item.product.id === product.id)
-                  return {
-                    product : item.product,
-                    quantity : item.quantity + 1
-                  }
+        return { 
+          cartProducts: cartProducts
+        }
 
-                  return item
-              })
-            }
+      });
 
-          }
-        );
-
-      } else {
-
-        patchState(store, (state) => {
-          return {
-            cartProducts : [...cartProducts, {product:product, quantity:1}]
-          }
-        });
-
-      }
     },
 
     removeFromCart: (id: number) => {
-      patchState(store, (state) => ({ cartProducts: store.cartProducts().filter(item => item.product.id !== id) }));
 
-    },
+      let cartProducts : Map<number, ProductCart> = new Map(store.cartProducts())
 
-    clearCart: () => {
-      patchState(store, (state) => ({ cartProducts: [] }));
+      cartProducts.delete(id)
+
+      patchState(store, (state) => {
+          
+        return { 
+          cartProducts: cartProducts
+        }
+
+      });
+
     },
 
   })),
 
   withComputed((store) => ({
+
     cartCount: computed(() => {
-      return store.cartProducts().reduce((acc, productCart)=>{
+
+      let cartProductsArray = Array.from(store.cartProducts().values())
+      return cartProductsArray.reduce((acc, productCart)=>{
         return acc + productCart.quantity
       },0)
-    })
+
+    }),
+
   })),
 
  

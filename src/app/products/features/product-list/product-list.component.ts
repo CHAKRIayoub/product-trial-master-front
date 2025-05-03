@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from "@angular/core";
+import { Component, OnInit, computed, inject, signal } from "@angular/core";
 import { Product } from "app/products/data-access/product.model";
 import { ProductsService } from "app/products/data-access/products.service";
 import { ProductFormComponent } from "app/products/ui/product-form/product-form.component";
@@ -8,7 +8,7 @@ import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
-import { CartStore } from '../../stores/cart-store/cart.store'
+import { CartStore, ProductCart } from '../../stores/cart-store/cart.store'
 
 const emptyProduct: Product = {
   id: 0,
@@ -45,8 +45,21 @@ export class ProductListComponent implements OnInit {
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
 
+  readonly ProductCartList = computed(() => {
+
+      let productCartList : Array<ProductCart> = [] 
+      this.cart.cartProducts().forEach((value, key)=>{
+        productCartList[key] = value
+      })
+      return productCartList
+
+    }
+  );
+
   ngOnInit() {
+
     this.productsService.get().subscribe();
+
   }
 
   public onCreate() {
@@ -69,6 +82,10 @@ export class ProductListComponent implements OnInit {
     this.cart.addToCart(product)
   }
 
+  public deleteFromCart(product: Product) {
+    this.cart.removeFromCart(product.id)
+  }
+
   public onSave(product: Product) {
     if (this.isCreation) {
       this.productsService.create(product).subscribe();
@@ -85,6 +102,8 @@ export class ProductListComponent implements OnInit {
   private closeDialog() {
     this.isDialogVisible = false;
   }
+
+  
 
 
 
