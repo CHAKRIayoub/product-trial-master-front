@@ -20,6 +20,8 @@ export const CartStore = signalStore(
   { providedIn: 'root' },
 
   withState(initialCartSate),
+
+
   withMethods((store) => ({ 
 
     addToCart: (product : Product) => {
@@ -41,7 +43,7 @@ export const CartStore = signalStore(
 
     removeFromCart: (id: number) => {
 
-      let cartProducts : Map<number, ProductCart> = store.cartProducts()
+      let cartProducts : Map<number, ProductCart> = new Map(store.cartProducts())
 
       cartProducts.delete(id)
 
@@ -53,16 +55,6 @@ export const CartStore = signalStore(
 
       });
 
-    },
-
-    clearCart: () => {
-      patchState(store, (state) => {
-          
-        return { 
-          cartProducts: new Map
-        }
-
-      });
     },
 
   })),
