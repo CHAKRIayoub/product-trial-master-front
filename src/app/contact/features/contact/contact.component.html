@@ -1,1 +1,39 @@
-<p>contact works!</p>
+<div class="p-card p-4 max-w-lg mx-auto mt-5 shadow-2">
+    <h2 class="text-2xl mb-4">Contactez-nous</h2>
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <div class="p-field mb-3">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          pInputText
+          formControlName="email"
+          required
+          class="w-full"
+        />
+        
+      </div>
+
+      <div class="p-field mb-3">
+        <label for="message">Message</label>
+        <textarea
+          id="message"
+          formControlName="message"
+          pInputTextarea
+          rows="5"
+          required
+          class="w-full"
+        ></textarea>
+        
+      </div>
+
+      <button
+        pButton
+        type="submit"
+        label="Envoyer"
+        [disabled]="contactForm.invalid"
+        class="p-button-primary w-full"
+      ></button>
+    </form>
+
+  </div>
