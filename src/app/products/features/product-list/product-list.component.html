@@ -33,10 +33,10 @@
 
 
 
-                                    @if(ProductCartList()[product.id] ){
+                                    @if(cart.ProductCartArray()[product.id] ){
                                         <p-button   icon="pi pi-cart-minus"
                                                     label="Supprimer"  
-                                                    [badge]="ProductCartList()[product.id].quantity + ''"
+                                                    [badge]="cart.ProductCartArray()[product.id].quantity + ''"
                                                     severity="warning"
                                                     (onClick)="deleteFromCart(product)" />
                                     }
