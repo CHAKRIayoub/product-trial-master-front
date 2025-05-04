@@ -37,24 +37,13 @@ const emptyProduct: Product = {
 export class ProductListComponent implements OnInit {
 
   private readonly productsService = inject(ProductsService);
-  private readonly cart = inject(CartStore);
+  public readonly cart = inject(CartStore);
 
   public readonly products = this.productsService.products;
 
   public isDialogVisible = false;
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
-
-  readonly ProductCartList = computed(() => {
-
-      let productCartList : Array<ProductCart> = [] 
-      this.cart.cartProducts().forEach((value, key)=>{
-        productCartList[key] = value
-      })
-      return productCartList
-
-    }
-  );
 
   ngOnInit() {
 

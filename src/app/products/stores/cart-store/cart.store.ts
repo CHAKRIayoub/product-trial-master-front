@@ -70,6 +70,26 @@ export const CartStore = signalStore(
 
     }),
 
+    cartTotal: computed(() => {
+
+      let cartProductsArray = Array.from(store.cartProducts().values())
+      return cartProductsArray.reduce((acc, productCart)=>{
+        return acc + (productCart.quantity * productCart.product.price)
+      },0)
+
+    }),
+
+    ProductCartArray : computed(() => {
+    
+          let productCartList : Array<ProductCart> = [] 
+          store.cartProducts().forEach((value, key)=>{
+            productCartList[key] = value
+          })
+          return productCartList
+    
+        }
+      )
+
   })),
 
  
