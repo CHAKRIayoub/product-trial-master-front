@@ -9,6 +9,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { CartStore, ProductCart } from '../../stores/cart-store/cart.store'
+import { PaginatorModule } from 'primeng/paginator';
 
 const emptyProduct: Product = {
   id: 0,
@@ -32,7 +33,7 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [CommonModule, TagModule, DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent],
+  imports: [CommonModule, TagModule, DataViewModule, CardModule, ButtonModule, DialogModule, PaginatorModule, ProductFormComponent],
 })
 export class ProductListComponent implements OnInit {
 
@@ -44,6 +45,15 @@ export class ProductListComponent implements OnInit {
   public isDialogVisible = false;
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
+
+  public selectedPage = signal(0)
+  public rowsPerPage = signal(5)
+
+  totalRecords = computed(() => this.products().length);
+
+  // front pagination, if we have a backend pagination we don't need this computed (in this case i have implemened a front pagination)
+  paginatedProducts = computed(() => this.products().slice( this.selectedPage() * this.rowsPerPage(), (this.selectedPage() * this.rowsPerPage()) + this.rowsPerPage()  ));
+
 
   ngOnInit() {
 
@@ -94,7 +104,14 @@ export class ProductListComponent implements OnInit {
 
   
 
+  onPageChange(event: any){
 
+    this.selectedPage.set(event.page) 
+    this.rowsPerPage.set(event.rows) 
+
+    // if we have a backend we should send a request with page & size here (in this case i have implemened a front pagination)
+  
+  }
 
   
 
