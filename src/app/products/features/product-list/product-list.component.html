@@ -2,7 +2,7 @@
 
 <p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
 
-<p-dataView #dv [value]="products()">
+<p-dataView #dv [value]="paginatedProducts()">
     <ng-template pTemplate="list" let-products>
 
         <div class="grid grid-nogutter">
@@ -55,6 +55,15 @@
         </div>
     </ng-template>
 </p-dataView>
+
+<p-paginator 
+    (onPageChange)="onPageChange($event)" 
+    [first]="selectedPage() * rowsPerPage()"
+    [rows]="rowsPerPage()" 
+    [totalRecords]="totalRecords()" 
+    [showCurrentPageReport]="true" currentPageReportTemplate="{rows} sur {totalRecords} produits"
+    [rowsPerPageOptions]="[5, 10, 20, 30]" />
+
 
 <p-dialog [(visible)]="isDialogVisible"
     [style]="{ width: '50vw' }"
